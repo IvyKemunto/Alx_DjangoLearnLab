@@ -5,7 +5,7 @@ from .models import Library
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, permission_required
 from django.http import HttpResponseForbidden
 
 # Function-based view to list all books
@@ -53,3 +53,16 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
+
+# Permission-based views
+@permission_required('relationship_app.can_add_book')
+def add_book_view(request):
+    return render(request, 'relationship_app/add_book.html')
+
+@permission_required('relationship_app.can_change_book')
+def edit_book_view(request):
+    return render(request, 'relationship_app/edit_book.html')
+
+@permission_required('relationship_app.can_delete_book')
+def delete_book_view(request):
+    return render(request, 'relationship_app/delete_book.html')
