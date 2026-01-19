@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    <!-- Search Form with CSRF Protection -->
+    <form method="get" action="{% url 'search_books' %}">
+        <input type="text" name="q" placeholder="Search books..." value="{{ search_query|default:'' }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if books %}
+        <ul>
+            {% for book in books %}
+                <li>
+                    <strong>{{ book.title }}</strong> by {{ book.author }} ({{ book.publication_year }})
+                    <a href="{% url 'edit_book' book.pk %}">Edit</a>
+                    <a href="{% url 'delete_book' book.pk %}">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books available.</p>
+    {% endif %}
+
+    <a href="{% url 'add_book' %}">Add New Book</a>
+</body>
+</html>
