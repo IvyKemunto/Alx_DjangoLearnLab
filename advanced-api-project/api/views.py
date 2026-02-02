@@ -1,18 +1,19 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from django_filters import rest_framework as filters
-from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+import django_filters
 from .models import Book
 from .serializers import BookSerializer
 
 
-class BookFilter(filters.FilterSet):
+class BookFilter(django_filters.FilterSet):
     """
     Custom filter for Book model allowing filtering by title, author, and publication_year.
     """
-    title = filters.CharFilter(lookup_expr='icontains')
-    author = filters.CharFilter(field_name='author__name', lookup_expr='icontains')
-    publication_year = filters.NumberFilter()
+    title = django_filters.CharFilter(lookup_expr='icontains')
+    author = django_filters.CharFilter(field_name='author__name', lookup_expr='icontains')
+    publication_year = django_filters.NumberFilter()
 
     class Meta:
         model = Book
@@ -35,7 +36,7 @@ class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = BookFilter
     search_fields = ['title', 'author__name']
     ordering_fields = ['title', 'publication_year']
