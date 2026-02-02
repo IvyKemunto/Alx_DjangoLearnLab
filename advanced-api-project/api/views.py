@@ -1,23 +1,9 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import filters
-from django_filters.rest_framework import DjangoFilterBackend
-import django_filters
+from django_filters import rest_framework
 from .models import Book
 from .serializers import BookSerializer
-
-
-class BookFilter(django_filters.FilterSet):
-    """
-    Custom filter for Book model allowing filtering by title, author, and publication_year.
-    """
-    title = django_filters.CharFilter(lookup_expr='icontains')
-    author = django_filters.CharFilter(field_name='author__name', lookup_expr='icontains')
-    publication_year = django_filters.NumberFilter()
-
-    class Meta:
-        model = Book
-        fields = ['title', 'author', 'publication_year']
 
 
 class BookListView(generics.ListAPIView):
@@ -25,19 +11,26 @@ class BookListView(generics.ListAPIView):
     ListView: Retrieves all books from the database.
 
     Features:
-        - Filtering: Filter by title, author, and publication_year
-        - Searching: Search by title and author name
-        - Ordering: Order by title and publication_year
+        - Filtering: Filter by title, author, and publication_year using DjangoFilterBackend
+        - Searching: Search by title and author name using SearchFilter
+        - Ordering: Order by title and publication_year using OrderingFilter
 
     Permissions:
         - Read-only access for unauthenticated users
         - Full access for authenticated users
+
+    Query Parameters:
+        - ?title=<value> - Filter by title
+        - ?author=<value> - Filter by author name
+        - ?publication_year=<value> - Filter by publication year
+        - ?search=<value> - Search in title and author fields
+        - ?ordering=<field> - Order by title or publication_year (use -field for descending)
     """
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_class = BookFilter
+    filter_backends = [rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ['title', 'author', 'publication_year']
     search_fields = ['title', 'author__name']
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']
