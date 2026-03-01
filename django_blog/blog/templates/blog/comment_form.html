@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Comment - Django Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h4>Edit Comment</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                        <div class="text-danger">{{ form.content.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Update Comment
+                    </button>
+                    <a href="{% url 'post-detail' object.post.pk %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

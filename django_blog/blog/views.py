@@ -88,7 +88,7 @@ class PostDetailView(DetailView):
 class PostCreateView(LoginRequiredMixin, CreateView):
     """Create a new blog post."""
     model = Post
-    form_class = PostForm
+    fields = ['title', 'content']
     template_name = 'blog/post_form.html'
     success_url = reverse_lazy('post-list')
 
@@ -101,7 +101,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """Update an existing blog post."""
     model = Post
-    form_class = PostForm
+    fields = ['title', 'content']
     template_name = 'blog/post_form.html'
 
     def form_valid(self, form):

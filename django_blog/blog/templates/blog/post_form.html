@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit Post{% else %}New Post{% endif %} - Django Blog{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h2>{% if object %}Edit Post{% else %}Create New Post{% endif %}</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_title" class="form-label">Title</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="text-danger">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_content" class="form-label">Content</label>
+                        {{ form.content }}
+                        {% if form.content.errors %}
+                        <div class="text-danger">{{ form.content.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_tags" class="form-label">Tags (comma-separated)</label>
+                        {{ form.tags }}
+                        {% if form.tags.errors %}
+                        <div class="text-danger">{{ form.tags.errors }}</div>
+                        {% endif %}
+                        <small class="text-muted">Enter tags separated by commas (e.g., python, django, web)</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {% if object %}Update{% else %}Create{% endif %} Post
+                    </button>
+                    <a href="{% url 'post-list' %}" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
