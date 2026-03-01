@@ -3,8 +3,11 @@
 
 {% block title %}Login - Django Blog{% endblock %}
 
-{% block content %}
+{% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
 <div class="row justify-content-center">
     <div class="col-md-5">
         <div class="card">
