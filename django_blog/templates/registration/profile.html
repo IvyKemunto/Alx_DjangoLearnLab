@@ -44,32 +44,10 @@
                 <h4><i class="fas fa-edit"></i> Edit Profile</h4>
             </div>
             <div class="card-body">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">Username</label>
-                        <input type="text" name="username" id="id_username" class="form-control"
-                               value="{{ user_form.username.value }}">
-                        {% if user_form.username.errors %}
-                        <div class="text-danger">{{ user_form.username.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_email" class="form-label">Email</label>
-                        <input type="email" name="email" id="id_email" class="form-control"
-                               value="{{ user_form.email.value }}">
-                        {% if user_form.email.errors %}
-                        <div class="text-danger">{{ user_form.email.errors }}</div>
-                        {% endif %}
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_bio" class="form-label">Bio</label>
-                        <textarea name="bio" id="id_bio" class="form-control" rows="3">{{ profile_form.bio.value|default:'' }}</textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_profile_picture" class="form-label">Profile Picture</label>
-                        <input type="file" name="profile_picture" id="id_profile_picture" class="form-control">
-                    </div>
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save"></i> Update Profile
                     </button>

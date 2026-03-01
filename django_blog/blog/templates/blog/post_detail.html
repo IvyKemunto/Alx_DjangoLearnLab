@@ -14,7 +14,7 @@
         <p>
             <i class="fas fa-tags"></i>
             {% for tag in post.tags.all %}
-            <a href="{% url 'posts-by-tag' tag.slug %}" class="badge bg-secondary tag-badge">{{ tag.name }}</a>
+            <a href="{% url 'posts-by-tag' tag.name %}" class="badge bg-secondary tag-badge">{{ tag.name }}</a>
             {% endfor %}
         </p>
         {% endif %}
@@ -43,7 +43,7 @@
     </div>
     <div class="card-body">
         {% if user.is_authenticated %}
-        <form method="POST" action="{% url 'add-comment' post.pk %}" class="mb-4">
+        <form method="POST" action="{% url 'add-comment' post_id=post.pk %}" class="mb-4">
             {% csrf_token %}
             {{ comment_form.content }}
             <button type="submit" class="btn btn-primary mt-2">

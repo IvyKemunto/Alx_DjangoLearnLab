@@ -140,13 +140,13 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'blog/comment_form.html'
 
     def form_valid(self, form):
-        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['post_id'])
         form.instance.author = self.request.user
         messages.success(self.request, 'Comment added successfully!')
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('post-detail', kwargs={'pk': self.kwargs['post_id']})
 
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -204,11 +204,11 @@ def search_posts(request):
     return render(request, 'blog/search_results.html', context)
 
 
-def posts_by_tag(request, tag_slug):
+def posts_by_tag(request, tag_name):
     """Display posts filtered by tag."""
-    posts = Post.objects.filter(tags__slug=tag_slug)
+    posts = Post.objects.filter(tags__name__iexact=tag_name)
     context = {
         'posts': posts,
-        'tag': tag_slug
+        'tag': tag_name
     }
     return render(request, 'blog/posts_by_tag.html', context)
