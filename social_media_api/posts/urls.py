@@ -13,4 +13,6 @@ urlpatterns = [
         'get': 'list',
         'post': 'create'
     }), name='post-comments'),
+    path('<int:pk>/like/', PostViewSet.as_view({'post': 'like'}), name='post-like'),
+    path('<int:pk>/unlike/', PostViewSet.as_view({'post': 'unlike'}), name='post-unlike'),
 ]
