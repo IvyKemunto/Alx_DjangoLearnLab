@@ -12,11 +12,12 @@ from .serializers import (
 )
 
 User = get_user_model()
+CustomUser = User
 
 
 class UserRegistrationView(generics.CreateAPIView):
     """View for user registration."""
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = [permissions.AllowAny]
 
